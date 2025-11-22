@@ -1,13 +1,7 @@
 name: Merge Conflict Labeler
 
 on:
-  push:
-    branches:
-      - master
-  pull_request_target:
-    branches:
-      - master
-    types: [synchronize]
+  workflow_dispatch:
 
 jobs:
   label:

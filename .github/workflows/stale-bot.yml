@@ -1,8 +1,6 @@
 name: 'Automatically close stale issues'
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 */6 * * *'
 #Run every 6 hours
 
 jobs:
@@ -27,7 +25,7 @@ jobs:
             This issue was marked as `cannot-reproduce` by a maintainer.
             If an issue is non-reproducible, we cannot fix it, as we do not know what the underlying issue is.
             If you have any ideas how we can reproduce this issue, we would love to hear them.
-            
+
             We don't have a good way to deal with truely unreproducible issues and are going to close this issue in a month.
             If think there might be other differences in our environment or in how we tried to reproduce this, we would appreciate any ideas.
           close-issue-message: |-
@@ -39,4 +37,4 @@ jobs:
           days-before-pr-close: -1
           any-of-issue-labels: 'cannot-reproduce'
           operations-per-run: 200
-    
+
