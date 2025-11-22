@@ -1,0 +1,50 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Step
+        run: npm run build
+
+      - name: Deploy to Frontend Machine
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            mkdir -p ~/uptime-kuma
+            cd ~/uptime-kuma
+            sudo compose down || true  # Stop existing containers
+            sudo compose pull  # Pull latest image
+            sudo compose up -d  # Start in detached mode
+
+
+  notify:
+    name: Notify Status
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always()
+
+    steps:
+      - name: Deployment Status
+        run: |
+          if [ "${{ needs.deploy.result }}" == "success" ]; then
+            echo "Deployment successful!"
+          else
+            echo "Deployment failed!"
+            exit 1
+          fi
