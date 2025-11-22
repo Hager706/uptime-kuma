@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-        
+
       - name: Build Step
         run: npm run build
 
@@ -36,9 +36,9 @@ jobs:
           script: |
             mkdir -p ~/uptime-kuma
             cd ~/uptime-kuma
-            sudo compose down || true  # Stop existing containers
-            sudo compose pull  # Pull latest image
-            sudo compose up -d  # Start in detached mode
+            sudo docker compose down || true  # Stop existing containers
+            sudo docker compose pull  # Pull latest image
+            sudo docker compose up -d  # Start in detached mode
 
 
   notify:
