@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "compose.yaml"
-          target: "~/uptime-kuma/compose.yaml"
+          target: "~/uptime-kuma"
 
       - name: Deploy to Frontend Machine
         uses: appleboy/ssh-action@v1.0.3
@@ -59,7 +59,7 @@ jobs:
     steps:
       - name: Deployment Status
         run: |
-          if [ "${{ needs.deploy.result }}" == "success" ]; then
+          if [ "${{ needs.build-and-deploy.result }}" == "success" ]; then
             echo "Deployment successful!"
           else
             echo "Deployment failed!"
