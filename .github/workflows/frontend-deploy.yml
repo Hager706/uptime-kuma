@@ -26,6 +26,15 @@ jobs:
       - name: Build Step
         run: npm run build
 
+      - name: Copy compose file to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "compose.yaml"
+          target: "~/uptime-kuma/compose.yaml"
+
       - name: Deploy to Frontend Machine
         uses: appleboy/ssh-action@v1.0.3
         with:
